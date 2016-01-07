@@ -4,9 +4,7 @@
 
 package iobit
 
-import (
-	"errors"
-)
+import "errors"
 
 // Writer wraps a raw byte array and provides multiple methoods to write data bit-by-bit
 // Its methods don't return the usual error as it is too expensive.
@@ -94,6 +92,15 @@ func (w *Writer) PutUint64Le(bits uint, val uint64) {
 		val >>= 32
 	}
 	w.PutUint32Le(bits, uint32(val))
+}
+
+// PutBool writes a single bit based off boolean input (1 for true, 0 for false).
+func (w *Writer) PutBool(bit bool) {
+	if bit {
+		w.PutUint32(1, 0xFF)
+	} else {
+		w.PutUint32(1, 0x00)
+	}
 }
 
 // Flush flushes the writer to its underlying buffer.
