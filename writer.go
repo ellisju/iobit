@@ -173,3 +173,12 @@ func (w *Writer) Reset() {
 	w.fill = 0
 	w.idx = 0
 }
+
+// GetSlice returns the iobit.Writer's destination bytel slice
+// TODO: Have this add whatever's left in the cache to the byte slice before
+// returning it; assume the caller will also grab the index and figure out where
+// the real data ends. Without this the returned slice is only accurate at byte
+// increments.
+func (w *Writer) GetSlice() []byte {
+	return w.dst
+}
