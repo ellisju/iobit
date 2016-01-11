@@ -180,5 +180,15 @@ func (w *Writer) Reset() {
 // the real data ends. Without this the returned slice is only accurate at byte
 // increments.
 func (w *Writer) GetSlice() []byte {
+	newSlice := w.dst
+	fill := w.fill
+	idx := w.idx
+	cache := w.cache
+	for fill >= 8 && idx < len(newSlice) {
+		newSlice[idx] = byte(cache >> 56)
+		idx++
+		cache <<= 8
+		fill -= 8
+	}
 	return w.dst
 }
